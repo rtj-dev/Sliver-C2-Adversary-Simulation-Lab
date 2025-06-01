@@ -9,16 +9,16 @@ TBD - A bonus phase demonstrated escalation to Domain Admin by abusing writable 
 
 ## 📚 Table of Contents
 
-- [Objectives & Learning Goals](#objectives--learning-goals)
-- [Lab Environment Overview](#lab-environment-overview)
-- [Attack Narrative & Methodology](#attack-narrative--methodology)
-  - [Phase 1: Initial Access & C2 Establishment](#phase-1-initial-access--c2-establishment)
-  - [Phase 2: Local Operations, Credential Access & Pivot Establishment on `LAB-WIN10`](#phase-2-local-operations-credential-access--pivot-establishment-on-lab-win10)
-  - [Phase 3: Exploitation (Accessing HR Data)](#phase-3-exploitation-accessing-hr-data)
-  - [Phase 4: Bonus - Domain Escalation & Persistence (TBD)](#tbd---phase-4-bonus-domain-escalation--persistence---tbd)
-- [Scenario Scope & Limitations](#scenario-scope--limitations)
-- [Key Learnings & Skills Demonstrated](#key-learnings--skills-demonstrated)
-- [Further Reading & References](#further-reading--references)
+- [Objectives & Learning Goals](#-objectives--learning-goals)
+- [Lab Environment Overview](#-lab-environment-overview) 
+- [Attack Narrative & Methodology](#%EF%B8%8F-attack-narrative--methodology) 
+  - [Phase 1: Initial Access & C2 Establishment](#-phase-1--initial-access--c2-establishment) 
+  - [Phase 2: Local Operations, Credential Access & Pivot Establishment on `LAB-WIN10`](#%EF%B8%8F-phase-2-local-operations-credential-access--pivot-establishment-on-lab-win10)
+  - [Phase 3: Exploitation (Accessing HR Data)](#-phase-3-exploitation-accessing-hr-data) 
+  - [Phase 4: Bonus - Domain Escalation & Persistence (TBD)](#-tbd---phase-4-bonus-domain-escalation--persistence---tbd)  
+- [Scenario Scope & Limitations](#%EF%B8%8F-scenario-scope--limitations)
+- [Key Learnings & Skills Demonstrated](#-key-learnings--skills-demonstrated) 
+- [Further Reading & References](#-further-reading--references)
 
 ## 🎯 Objectives & Learning Goals
 *   **Command and Control:** An introduction and hands-on experience setting up and operating `Sliver C2`.
@@ -104,7 +104,7 @@ With the initial session active as `t.howard`, the immediate objective is to und
     Version: 10 build 17763 x86_64
     Locale: en-GB
     Arch: amd64
-    Active C2: https://c2.testlab.best:443 <!-- Assuming consistency fix here -->
+    Active C2: https://c2.testlab.best:443 
     Remote Address: tcp([::1]:60772)-><Victim Public IP>
     Proxy URL:
     Reconnect Interval: 1m0s
@@ -168,11 +168,11 @@ With the initial session active as `t.howard`, the immediate objective is to und
         Sliver makes this easy to execute through their armory extensions:
         ```sliver
         sliver (ABSENT_PRESSROOM) > armory install c2-tool-collection
-        sliver (ABSENT_PRESSROOM) > c2tc-askcreds
+        sliver (ABSENT_PRESSROOM) > c2tc-askscreds
         ```
         This presents the victim with a nice window:
         
-        ![Credential Prompt GUI](https://github.com/user-attachments/assets/cf4cf71c-462b-4e19-a3e2-41b9d560343d) <!-- Updated Alt Text -->
+        ![Credential Prompt GUI](https://github.com/user-attachments/assets/cf4cf71c-462b-4e19-a3e2-41b9d560343d) 
         
         Success! 
         ```sliver
@@ -281,24 +281,24 @@ With the initial session active as `t.howard`, the immediate objective is to und
     With port forwards active, we target the local forwarded ports on Exegol.
     *   **NetExec (NXC):**
         Initial enumeration of users and shares. Discovery of a "HR" share.
-        ![NXC SMB Enumeration Output](https://github.com/user-attachments/assets/dd2d9540-39c5-4b95-82e8-9862fec760c2) <!-- Updated Alt Text -->
+        ![NXC SMB Enumeration Output](https://github.com/user-attachments/assets/dd2d9540-39c5-4b95-82e8-9862fec760c2) 
         Querying for ADCS using the LDAP module.
-        ![NXC ADCS LDAP Query Output](https://github.com/user-attachments/assets/9797a22d-ea7a-4eca-919e-d2e82b707cc4) <!-- Updated Alt Text -->
+        ![NXC ADCS LDAP Query Output](https://github.com/user-attachments/assets/9797a22d-ea7a-4eca-919e-d2e82b707cc4) 
     *   **BloodyAD:**
         Quick view of our own attributes.
-        ![BloodyAD User Attributes Output](https://github.com/user-attachments/assets/60a08488-0053-4639-ab48-80c4079bed94) <!-- Updated Alt Text -->
+        ![BloodyAD User Attributes Output](https://github.com/user-attachments/assets/60a08488-0053-4639-ab48-80c4079bed94) 
 
     *   **RustHound:**
         Offline analysis of the domain. 
-        ![RustHound Collector Output/GIF](https://github.com/user-attachments/assets/881d8e7e-2be3-415a-beab-00814e6e79b0) <!-- Updated Alt Text -->
+        ![RustHound Collector Output/GIF](https://github.com/user-attachments/assets/881d8e7e-2be3-415a-beab-00814e6e79b0) 
         Initial findings led to the discovery of a group (`Helpdesk`) delegated `ForceChangePassword` over several users.
-        ![BloodHound ForceChangePassword Path GIF/Image](https://github.com/user-attachments/assets/5f1b9ab2-8035-4443-b254-5efc208dd8d0) <!-- Updated Alt Text -->
+        ![BloodHound ForceChangePassword Path GIF/Image](https://github.com/user-attachments/assets/5f1b9ab2-8035-4443-b254-5efc208dd8d0) 
 
     *   **Certipy:**
         Enumerating for vulnerable templates.
-        ![Certipy Find Command GIF/Image](https://github.com/user-attachments/assets/923ac8c9-6254-4908-a351-ccfc4a8862d9) <!-- Updated Alt Text -->
+        ![Certipy Find Command GIF/Image](https://github.com/user-attachments/assets/923ac8c9-6254-4908-a351-ccfc4a8862d9) 
         Immediate discovery of a potentially exploitable ESC13 template (`HRRemoteAccess`).
-        ![Certipy ESC13 Vulnerable Template Output](https://github.com/user-attachments/assets/07dbc91a-5df2-4fa9-858d-4934a516bc6f) <!-- Updated Alt Text -->
+        ![Certipy ESC13 Vulnerable Template Output](https://github.com/user-attachments/assets/07dbc91a-5df2-4fa9-858d-4934a516bc6f) 
    *   **Exploring ESC13:**
        Key components from the Certipy output for `HRRemoteAccess` template:
        ```text
@@ -383,7 +383,7 @@ With the initial session active as `t.howard`, the immediate objective is to und
     </details>
     
     Confirmed access to the HR share. Exfiltrating contents using NXC's `spider_plus` module.
-    ![NXC Spider Plus Exfiltrating HR Share](https://github.com/user-attachments/assets/62c65338-1bf2-4f1c-9596-54090991c01e) <!-- Updated Alt Text -->
+    ![NXC Spider Plus Exfiltrating HR Share](https://github.com/user-attachments/assets/62c65338-1bf2-4f1c-9596-54090991c01e) 
 
 *   **Accessing Sensitive Data (Listing Exfiltrated Files):**
     ```bash
