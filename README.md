@@ -423,14 +423,14 @@ With the initial session active as `t.howard`, the immediate objective is to und
         ESC13                               : User has dangerous permissions.
         ```
                 
-##  Scenario Scope & Limitations
+## ⚠️ Scenario Scope & Limitations
 *   **Focus:** C2 communications, AD enumeration, targeted ADCS ESC13 exploitation, and advanced AD object abuse for privilege escalation & persistence.
 *   **Out of Scope:**
     *   AV/EDR bypass techniques for payloads and on-host tools (Defender/AV disabled).
     *   Initial access vector development.
 *   **Objective:** Simulate realistic, targeted data access followed by controlled escalation to DA, demonstrating layered attack paths and persistence.
 
-##  Key Learnings & Skills Demonstrated
+## ✨ Key Learnings & Skills Demonstrated
 *   **Practical C2 Setup & Usage:** Configured Sliver with Cloudflare Tunneling using a custom domain within a containerized environment (Exegol).
 *   **In-depth ADCS Exploitation:** Identified and exploited a nuanced ADCS ESC13 misconfiguration based on Issuance Policy OIDs and access control lists.
 *   **Advanced AD Object Abuse:** Demonstrated escalation by modifying critical AD CS configuration objects (OIDs).
@@ -439,7 +439,7 @@ With the initial session active as `t.howard`, the immediate objective is to und
 *   **Red/Purple Team Mindset:** Documented both attack techniques and corresponding mitigation/detection strategies.
 *   **Documentation & Reporting:** Clearly documented procedures, findings, and impact of the simulated attack.
 
-##  Further Reading & References
+## 🔗 Further Reading & References
 *   Sliver C2 Documentation: https://sliver.sh/docs
 *   Certipy Documentation: https://github.com/ly4k/Certipy/wiki
 *   Cloudflare Tunnel Documentation: https://developers.cloudflare.com/cloudflare-one/faq/cloudflare-tunnels-faq/#how-can-i-troubleshoot-a-tunnel-that-was-configured-from-the-zero-trust-dashboard
