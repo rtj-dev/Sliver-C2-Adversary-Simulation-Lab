@@ -1,6 +1,6 @@
 # Adversary Simulation: Abusing ADCS ESC13 (OID Misconfiguration) via Cloudflare-Tunneled Sliver C2
 
-![Banner](https://github.com/user-attachments/assets/180d07d2-23e2-4c80-891d-65659bb1bcbd)
+![Banner](./images/banner.png)
 
 ## 📖 Project Summary
 This project aims to document a red team simulation lab, demonstrating the establishment of a Command & Control (C2) channel using Sliver C2, tunnelled through a custom Cloudflare HTTPS endpoint (`c2.testlab.best`). The scenario simulates post-exploitation TTPs, starting from an assumed initial access point as an "IT Support" user (`t.howard`). Active Directory enumeration led to the identification and exploitation of an ADCS ESC13 vulnerability ("Issuance Policy with Privileged Group Linked"). This allowed the "IT Support" user to gain effective membership of an "HR Remote Access" group, ultimately accessing sensitive HR data. 
@@ -43,7 +43,7 @@ TBD - A bonus phase demonstrated escalation to Domain Admin by abusing writable 
     *   LAB-WIN10: NAT (Internet access for C2) & Host-only (Domain communication)
     *   Attacker/Exegol: Access via Tunnel
       
-    ![Network Diagram](https://github.com/user-attachments/assets/c80fcf65-f399-4d11-ba76-017ee3482898)
+    ![Network Diagram](./images/networking.png)
 
 ## ⚔️ Attack Narrative & Methodology
 
@@ -51,7 +51,7 @@ TBD - A bonus phase demonstrated escalation to Domain Admin by abusing writable 
 *   **Initial Access:** Assumed. A default Sliver HTTPS beacon was executed on `LAB-WIN10` in the context of `lab\t.howard`. Defender/AV was disabled for lab focus.
 *   **C2 Infrastructure:**
     *   Sliver HTTPS listener configured and Implant generated:
-        ![Sliver HTTPS Listener Setup and Implant Generation](https://github.com/user-attachments/assets/31230ccd-0f8f-4ab1-aaae-e0a3b288ed68)
+        ![Sliver HTTPS Listener Setup and Implant Generation](./images/sliver.gif)
 
     *   Cloudflare Tunnel (`cloudflared`) established on the Exegol container, mapping `https://c2.testlab.best` to the local Sliver listener (`https://localhost:443` from Exegol's perspective).
         ```bash
@@ -172,7 +172,7 @@ With the initial session active as `t.howard`, the immediate objective is to und
         ```
         This presents the victim with a nice window:
         
-        ![Credential Prompt GUI](https://github.com/user-attachments/assets/cf4cf71c-462b-4e19-a3e2-41b9d560343d) 
+        ![Credential Prompt GUI](./images/fakelogin.png) 
         
         Success! 
         ```sliver
@@ -281,24 +281,24 @@ With the initial session active as `t.howard`, the immediate objective is to und
     With port forwards active, we target the local forwarded ports on Exegol.
     *   **NetExec (NXC):**
         Initial enumeration of users and shares. Discovery of a "HR" share.
-        ![NXC SMB Enumeration Output](https://github.com/user-attachments/assets/dd2d9540-39c5-4b95-82e8-9862fec760c2) 
+        ![NXC SMB Enumeration Output](./images/netexec.gif) 
         Querying for ADCS using the LDAP module.
-        ![NXC ADCS LDAP Query Output](https://github.com/user-attachments/assets/9797a22d-ea7a-4eca-919e-d2e82b707cc4) 
+        ![NXC ADCS LDAP Query Output](./images/adcs.gif) 
     *   **BloodyAD:**
         Quick view of our own attributes.
-        ![BloodyAD User Attributes Output](https://github.com/user-attachments/assets/60a08488-0053-4639-ab48-80c4079bed94) 
+        ![BloodyAD User Attributes Output](./images/bloodyad.gif) 
 
     *   **RustHound:**
         Offline analysis of the domain. 
-        ![RustHound Collector Output/GIF](https://github.com/user-attachments/assets/881d8e7e-2be3-415a-beab-00814e6e79b0) 
+        ![RustHound Collector Output/GIF](./images/rusthound.gif) 
         Initial findings led to the discovery of a group (`Helpdesk`) delegated `ForceChangePassword` over several users.
-        ![BloodHound ForceChangePassword Path GIF/Image](https://github.com/user-attachments/assets/5f1b9ab2-8035-4443-b254-5efc208dd8d0) 
+        ![BloodHound ForceChangePassword Path GIF/Image](./images/bloodhound.png) 
 
     *   **Certipy:**
         Enumerating for vulnerable templates.
-        ![Certipy Find Command GIF/Image](https://github.com/user-attachments/assets/923ac8c9-6254-4908-a351-ccfc4a8862d9) 
+        ![Certipy Find Command GIF/Image](./images/templateenum.gif) 
         Immediate discovery of a potentially exploitable ESC13 template (`HRRemoteAccess`).
-        ![Certipy ESC13 Vulnerable Template Output](https://github.com/user-attachments/assets/07dbc91a-5df2-4fa9-858d-4934a516bc6f) 
+        ![Certipy ESC13 Vulnerable Template Output](./images/esc13.gif) 
    *   **Exploring ESC13:**
        Key components from the Certipy output for `HRRemoteAccess` template:
        ```text
