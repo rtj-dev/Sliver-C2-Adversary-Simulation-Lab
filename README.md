@@ -6,6 +6,7 @@
 This project aims to document a red team simulation lab, demonstrating the establishment of a Command & Control (C2) channel using Sliver C2, tunnelled through a custom Cloudflare HTTPS endpoint (`c2.testlab.best`). The scenario simulates post-exploitation TTPs, starting from an assumed initial access point as an "IT Support" user (`t.howard`). Active Directory enumeration led to the identification and exploitation of an ADCS ESC13 vulnerability ("Issuance Policy with Privileged Group Linked"). This allowed the "IT Support" user to gain effective membership of an "HR Remote Access" group, ultimately accessing sensitive HR data. 
 
 TBD - A bonus phase demonstrated escalation to Domain Admin by abusing writable OID object permissions, leveraging a similar ADCS misconfiguration, and achieving persistence via a Golden Certificate. - TBD
+TBD - Detail instructions of replication or provide vmdx.
 
 ## 📚 Table of Contents
 
